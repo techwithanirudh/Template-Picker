@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      .container {
+        position: relative;
+        width: 47%;
+        margin-top: 5%;
+      }
+
+      .templates {
+        display: flex;
+        flex-flow: wrap;
+        justify-content: space-between;
+      }
+
+      .image {
+        opacity: 1;
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: 0.5s ease;
+        backface-visibility: hidden;
+        /* Add box shadow */
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .middle {
+        transition: 0.5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+      }
+
+      .container:hover .image {
+        opacity: 0.3;
+      }
+
+      .container:hover .middle {
+        opacity: 1;
+      }
+
+      .text {
+        background-color: #04aa6d;
+        color: white;
+        font-size: 16px;
+        padding: 16px 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>WEBSITE TEMPLATES</h2>
+    <h1>Get inspired with a selection of designer-made website templates.</h1>
+    <div class="templates"></div>
+    <script>
+      function edit(template) {
+        localStorage.setItem("anikode-template", template);
+        window.location.href = "editor.html";
+      }
+
+      function preview(template) {
+        var tab = window
+          .open("", "_blank")
+          .document.write(
+            "<html><head><title>Preview</title></head><body>" +
+              '<iframe src="' +
+              template +
+              '" style="width:100%; height:100%; border:none;"></iframe>' +
+              "</body></html>"
+          );
+      }
+
+      function createTemplate(template, image) {
+        var templateDiv = document.createElement("div");
+        templateDiv.className = "container";
+        // Add flexbox
+        // templateDiv.style.margin = "10px";
+        // templateDiv.style.padding = "10px";
+        // templateDiv.style.border = "1px solid #ccc";
+        // templateDiv.style.borderRadius = "5px";
+        // templateDiv.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
+        // templateDiv.style.backgroundColor = "#fff";
+
+        templateDiv.innerHTML = `
+            <img src="${image}" alt="${image}" class="image" style="width: 100%">
+            <div class="middle">
+                <div class="text" onclick="preview('${template}')">View</div>
+                <hr />
+                <div class="text" onclick="edit('${template}')">Edit</div>
+            </div>
+            <h3>${template.split("/").at(-1)}</h3>        
+            `;
+
+        document.querySelector(".templates").appendChild(templateDiv);
+      }
+
+      function loadTemplates() {
+        var templates = [
+          "https://anikode.github.io/templates/template-1.html",
+          "https://anikode.github.io/templates/template-2.html",
+          "https://anikode.github.io/templates/template-3.html",
+          "https://anikode.github.io/templates/template-4.html",
+          "https://anikode.github.io/templates/template-5.html",
+        ];
+        for (var i = 0; i < templates.length; i++) {
+          createTemplate(
+            templates[i],
+            "https://anikode.github.io/templates/images/template-" +
+              (i + 1) +
+              ".png"
+          );
+        }
+      }
+
+      loadTemplates();
+    </script>
+  </body>
+</html>
